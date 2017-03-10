@@ -22,6 +22,11 @@
     "hof-behaviour"
   ],
   "homepage": "https://github.com/UKHomeOfficeForms/hof-behaviour-emailer#readme",
+  "dependencies": {
+    "debug": "^2.6.1",
+    "hof-emailer": "^2.0.0",
+    "hogan.js": "^3.0.2"
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "eslint": "^3.17.1",
