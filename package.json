@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npm run test:lint && npm run test:unit",
     "test:lint": "eslint .",
-    "test:unit": "mocha"
+    "test:unit": "mocha",
+    "test:unit:cover": "istanbul cover _mocha"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,11 @@
     "chai": "^3.5.0",
     "eslint": "^3.17.1",
     "eslint-config-homeoffice": "^2.1.2",
-    "mocha": "^3.2.0"
+    "hof-util-reqres": "^1.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "mocha-sandbox": "^1.0.0",
+    "sinon": "^1.17.7",
+    "sinon-chai": "^2.8.0"
   }
 }
