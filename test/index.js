@@ -124,6 +124,36 @@ describe('Emailer Behaviour', () => {
       }, done));
     });
 
+    it('throws error if recipient does not resolve to a string', done => {
+      const opts = options({ recipient: data => `${data.name}@example.com` });
+      const Email = Behaviour(opts)(Base);
+      controller = new Email();
+      req.sessionModel.set('name', 'bob');
+      controller.saveValues(req, {}, sandbox(err => {
+        expect(err).not.to.exist;
+      }, done));
+    });
+
+    it('throws error if recipient resolves to a null value', done => {
+      const opts = options({ recipient: 'unknown-field' });
+      req.sessionModel.unset('unknown-field');
+      const Email = Behaviour(opts)(Base);
+      controller = new Email();
+      controller.saveValues(req, {}, sandbox(err => {
+        expect(err).to.be.an('error');
+      }, done));
+    });
+
+    it('throws error if recipient resolves to a string that is not an email address', done => {
+      const opts = options({ recipient: 'name' });
+      req.sessionModel.set('name', 'Alice');
+      const Email = Behaviour(opts)(Base);
+      controller = new Email();
+      controller.saveValues(req, {}, sandbox(err => {
+        expect(err).to.be.an('error');
+      }, done));
+    });
+
     it('sends an email with a body of a rendered template', done => {
       req.sessionModel.set('name', 'Alice');
       controller.saveValues(req, {}, sandbox(err => {
