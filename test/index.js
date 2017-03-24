@@ -62,35 +62,35 @@ describe('Emailer Behaviour', () => {
 
   });
 
-  describe('saveValues', () => {
+  describe('successHandler', () => {
 
     class Base {
-      saveValues() {}
+      successHandler() {}
     }
 
     let controller;
     let req;
 
     beforeEach(() => {
-      sinon.stub(Base.prototype, 'saveValues').yieldsAsync();
+      sinon.stub(Base.prototype, 'successHandler').yieldsAsync();
       const Email = Behaviour(options())(Base);
       controller = new Email();
       req = request();
     });
 
     afterEach(() => {
-      Base.prototype.saveValues.restore();
+      Base.prototype.successHandler.restore();
     });
 
     it('exists, and is a function', () => {
       const Mixed = Behaviour(options())(class {});
       const instance = new Mixed();
-      expect(instance).to.have.property('saveValues');
-      expect(instance.saveValues).to.be.a('function');
+      expect(instance).to.have.property('successHandler');
+      expect(instance.successHandler).to.be.a('function');
     });
 
     it('sends an email to the configured recipient', done => {
-      controller.saveValues(req, {}, sandbox(err => {
+      controller.successHandler(req, {}, sandbox(err => {
         expect(err).not.to.exist;
         expect(Emailer.prototype.send).to.have.been.calledWith(sinon.match({
           recipient: 'test@example.com'
@@ -103,7 +103,7 @@ describe('Emailer Behaviour', () => {
       const Email = Behaviour(opts)(Base);
       controller = new Email();
       req.sessionModel.set('user-email', 'user@example.com');
-      controller.saveValues(req, {}, sandbox(err => {
+      controller.successHandler(req, {}, sandbox(err => {
         expect(err).not.to.exist;
         expect(Emailer.prototype.send).to.have.been.calledWith(sinon.match({
           recipient: 'user@example.com'
@@ -116,7 +116,7 @@ describe('Emailer Behaviour', () => {
       const Email = Behaviour(opts)(Base);
       controller = new Email();
       req.sessionModel.set('name', 'bob');
-      controller.saveValues(req, {}, sandbox(err => {
+      controller.successHandler(req, {}, sandbox(err => {
         expect(err).not.to.exist;
         expect(Emailer.prototype.send).to.have.been.calledWith(sinon.match({
           recipient: 'bob@example.com'
@@ -129,7 +129,7 @@ describe('Emailer Behaviour', () => {
       const Email = Behaviour(opts)(Base);
       controller = new Email();
       req.sessionModel.set('name', 'bob');
-      controller.saveValues(req, {}, sandbox(err => {
+      controller.successHandler(req, {}, sandbox(err => {
         expect(err).not.to.exist;
       }, done));
     });
@@ -139,7 +139,7 @@ describe('Emailer Behaviour', () => {
       req.sessionModel.unset('unknown-field');
       const Email = Behaviour(opts)(Base);
       controller = new Email();
-      controller.saveValues(req, {}, sandbox(err => {
+      controller.successHandler(req, {}, sandbox(err => {
         expect(err).to.be.an('error');
       }, done));
     });
@@ -149,14 +149,14 @@ describe('Emailer Behaviour', () => {
       req.sessionModel.set('name', 'Alice');
       const Email = Behaviour(opts)(Base);
       controller = new Email();
-      controller.saveValues(req, {}, sandbox(err => {
+      controller.successHandler(req, {}, sandbox(err => {
         expect(err).to.be.an('error');
       }, done));
     });
 
     it('sends an email with a body of a rendered template', done => {
       req.sessionModel.set('name', 'Alice');
-      controller.saveValues(req, {}, sandbox(err => {
+      controller.successHandler(req, {}, sandbox(err => {
         expect(err).not.to.exist;
         expect(Emailer.prototype.send).to.have.been.calledWith(sinon.match({
           body: 'hello Alice'
@@ -165,7 +165,7 @@ describe('Emailer Behaviour', () => {
     });
 
     it('sends an email with the configured subject', done => {
-      controller.saveValues(req, {}, sandbox(err => {
+      controller.successHandler(req, {}, sandbox(err => {
         expect(err).not.to.exist;
         expect(Emailer.prototype.send).to.have.been.calledWith(sinon.match({
           subject: 'confirmation email'
@@ -178,7 +178,7 @@ describe('Emailer Behaviour', () => {
       const Email = Behaviour(opts)(Base);
       controller = new Email();
       req.sessionModel.set('name', 'bob');
-      controller.saveValues(req, {}, sandbox(err => {
+      controller.successHandler(req, {}, sandbox(err => {
         expect(err).not.to.exist;
         expect(Emailer.prototype.send).to.have.been.calledWith(sinon.match({
           subject: 'application for bob'
@@ -186,18 +186,18 @@ describe('Emailer Behaviour', () => {
       }, done));
     });
 
-    it('calls through to super.saveValues when complete', done => {
-      controller.saveValues(req, {}, sandbox(err => {
+    it('calls through to super.successHandler when complete', done => {
+      controller.successHandler(req, {}, sandbox(err => {
         expect(err).not.to.exist;
-        expect(Base.prototype.saveValues).to.have.been.calledWith(req, {});
-        expect(Base.prototype.saveValues).to.have.been.calledAfter(Emailer.prototype.send);
+        expect(Base.prototype.successHandler).to.have.been.calledWith(req, {});
+        expect(Base.prototype.successHandler).to.have.been.calledAfter(Emailer.prototype.send);
       }, done));
     });
 
     it('calls back with error if template cannot be loaded', done => {
       const err = new Error('readfile failed');
       fs.readFile.withArgs('/path/to/to/my/email/template.html').yieldsAsync(err);
-      controller.saveValues(req, {}, sandbox(e => {
+      controller.successHandler(req, {}, sandbox(e => {
         expect(e).to.equal(err);
       }, done));
     });
