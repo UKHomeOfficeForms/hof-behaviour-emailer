@@ -1,0 +1,42 @@
+{
+  "name": "hof-behaviour-emailer",
+  "version": "1.0.0",
+  "description": "HOF behaviour to send emails",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test:lint && npm run test:unit",
+    "test:lint": "eslint .",
+    "test:unit": "mocha",
+    "test:unit:cover": "istanbul cover _mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UKHomeOfficeForms/hof-behaviour-emailer.git"
+  },
+  "author": "Leonard Martin <hello@lennym.co.uk>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/UKHomeOfficeForms/hof-behaviour-emailer/issues"
+  },
+  "keywords": [
+    "hof",
+    "hof-behaviour"
+  ],
+  "homepage": "https://github.com/UKHomeOfficeForms/hof-behaviour-emailer#readme",
+  "dependencies": {
+    "debug": "^2.6.1",
+    "hof-emailer": "^2.0.0",
+    "hogan.js": "^3.0.2"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.17.1",
+    "eslint-config-homeoffice": "^2.1.2",
+    "hof-util-reqres": "^1.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "mocha-sandbox": "^1.0.0",
+    "sinon": "^1.17.7",
+    "sinon-chai": "^2.8.0"
+  }
+}
