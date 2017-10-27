@@ -40,4 +40,12 @@ In addition to the options passed to `hof-emailer`, the following options can be
 * `subject` - defines the subject line of the email.
 * `parse` - parses the session model into an object used to populate the template.
 
-`recipient` and `subject` options can also be defined as functions, which will be passed a copy of the session model as an argument, and should return a string value.
+`recipient` and `subject` options can also be defined as functions, which will be passed a copy of the session model and a translation function as arguments, and should return a string value.
+
+```js
+// use a translated value for the email subject line
+const emailer = EmailBehaviour({
+  // ...
+  subject: (model, translate) => translate('email.success.subject')
+});
+```

@@ -186,6 +186,52 @@ describe('Emailer Behaviour', () => {
       }, done));
     });
 
+    it('passes req.translate method to subject function', done => {
+      req.translate = key => `translated ${key}`;
+      const opts = options({ subject: (data, translate) => `application for ${translate('name')}` });
+      const Email = Behaviour(opts)(Base);
+      controller = new Email();
+      controller.successHandler(req, {}, sandbox(err => {
+        expect(err).not.to.exist;
+        expect(Emailer.prototype.send).to.have.been.calledWith(sinon.match({
+          subject: 'application for translated name'
+        }));
+      }, done));
+    });
+
+    it('passes model through parse function if provided', done => {
+      const opts = options({
+        parse: data => Object.assign(data, { name: `${data.firstName} ${data.lastName}` })
+      });
+      const Email = Behaviour(opts)(Base);
+      req.sessionModel.set({
+        firstName: 'Alice',
+        lastName: 'Smith'
+      });
+      controller = new Email();
+      controller.successHandler(req, {}, sandbox(err => {
+        expect(err).not.to.exist;
+        expect(Emailer.prototype.send).to.have.been.calledWith(sinon.match({
+          body: 'hello Alice Smith'
+        }));
+      }, done));
+    });
+
+    it('passes req.translate method to parse function', done => {
+      req.translate = key => `translated ${key}`;
+      const opts = options({
+        parse: (data, translate) => Object.assign(data, { name: translate('name') })
+      });
+      const Email = Behaviour(opts)(Base);
+      controller = new Email();
+      controller.successHandler(req, {}, sandbox(err => {
+        expect(err).not.to.exist;
+        expect(Emailer.prototype.send).to.have.been.calledWith(sinon.match({
+          body: 'hello translated name'
+        }));
+      }, done));
+    });
+
     it('calls through to super.successHandler when complete', done => {
       controller.successHandler(req, {}, sandbox(err => {
         expect(err).not.to.exist;
