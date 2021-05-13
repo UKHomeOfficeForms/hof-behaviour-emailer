@@ -1,6 +1,6 @@
 {
   "name": "hof-behaviour-emailer",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "HOF behaviour to send emails",
   "main": "index.js",
   "scripts": {
@@ -25,7 +25,7 @@
   "homepage": "https://github.com/UKHomeOfficeForms/hof-behaviour-emailer#readme",
   "dependencies": {
     "debug": "^2.6.1",
-    "hof-emailer": "^2.0.0",
+    "hof-emailer": "^2.1.1",
     "hogan.js": "^3.0.2"
   },
   "devDependencies": {
