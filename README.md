@@ -1,3 +1,7 @@
+# DEPRECATED
+
+hof-behaviour-emailer has been added directly into hof v19.0.1 <(^_^)> and should not be installed separately
+
 # hof-behaviour-emailer
 HOF behaviour to send emails
 
